@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Merry Christmas</title>
+  <link rel="stylesheet" href="main.css" />
+  <script src="main.js"></script>
+</head>
+
+<body>
+  <div class="square top-left">
+    <span class="derp">what</span>
+    <span class="no-derp">happy</span>
+  </div>
+  <div class="square top-right">
+    <span class="derp">did</span>
+  </div>
+  <div class="square bottom-left">
+    <span class="derp">you</span>
+  </div>
+  <div class="square bottom-right" onclick="_innocentClickHandler(); return false;">
+    <span class="derp">do?</span>
+    <span class="no-derp">holidays!</span>
+  </div>
+</body>
+
+<script>
+  let derps = 0;
+
+  let startAnimation = (int) => {
+    return setInterval(() => {
+      if (randBetween(1, 10) % 2 === 0 && !app.tooManyFlakes(derps < 4)) app.getFlake();
+      app.animateFlakes();
+    }, int);
+  }
+
+  let mainAnimation = startAnimation(50);
+
+  const _innocentClickHandler = () => {
+    ++derps;
+    if (derps === 4) {
+      document.body.setAttribute('class', 'derp-mode');
+      clearInterval(mainAnimation);
+      startAnimation(10);
+    }
+  }
+
+</script>
+
+</html>

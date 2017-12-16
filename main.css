@@ -1,0 +1,66 @@
+/*
+red 992114
+green 1A3112
+gold C5A436
+*/
+body {
+  /*background-color: #992114;*/
+  background-color: #c5a436;
+  margin: 0;
+  padding: 0;
+}
+.square {
+  position: absolute;
+  width: calc(50vw - 20px);
+  height: calc(50vh - 20px);
+  background-color: #992114;
+  text-align: center;
+}
+.bottom-left,
+.bottom-right {
+  bottom: 0;
+}
+
+.bottom-right,
+.top-right {
+  right: 0;
+}
+.snowflake {
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.derp,
+.no-derp {
+  position: relative;
+  top: calc(calc(50vh - 20px) / 2);
+  color: #fff;
+  font-size: 72px;
+  text-transform: uppercase;
+  font-family: sans-serif;
+}
+.derp,
+.derp-mode .no-derp {
+  display: none;
+}
+.derp-mode .derp {
+  display: block;
+}
+/*
+.wrapper {
+  background-color: #c5a436;
+}
+.wrapper-vertical {
+  position: absolute;
+  height: 100vh;
+  width: 10vh;
+  left: calc(50vw - 5vh);
+}
+.wrapper-horizontal {
+  position: absolute;
+  height: 10vh;
+  width: 100vw;
+  top: 45vh;
+}*/
