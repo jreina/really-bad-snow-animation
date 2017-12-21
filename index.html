@@ -26,23 +26,11 @@
 </body>
 
 <script>
-  let derps = 0;
-
-  let startAnimation = (int) => {
-    return setInterval(() => {
-      if (randBetween(1, 10) % 2 === 0 && !app.tooManyFlakes(derps < 4)) app.getFlake();
-      app.animateFlakes();
-    }, int);
-  }
-
-  let mainAnimation = startAnimation(50);
-
+  const app = new Snow();
+  app.Init();
   const _innocentClickHandler = () => {
-    ++derps;
-    if (derps === 4) {
+    if (app.Derp()) {
       document.body.setAttribute('class', 'derp-mode');
-      clearInterval(mainAnimation);
-      startAnimation(10);
     }
   }
 
