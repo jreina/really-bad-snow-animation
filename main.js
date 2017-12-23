@@ -133,9 +133,7 @@ function Snow(options) {
     if (_state.derps > 4) {
       _options.limit = 4096;
       _updateRefreshInterval(20);
-      return true;
-    } else {
-      return false;
+      document.body.setAttribute("class", "derp-mode");
     }
   };
 
@@ -148,5 +146,5 @@ function Snow(options) {
 
   this.Init = _init;
   this.Derp = _derp;
-  this.KeyDownHandler = _handleKey.bind(this);
+  this.KeyDownHandler = _handleKey;
 }

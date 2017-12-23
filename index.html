@@ -19,7 +19,7 @@
   </div>
   <div class="square bottom-left">
   </div>
-  <div class="square bottom-right" onclick="_innocentClickHandler(); return false;">
+  <div class="square bottom-right" onclick="app.Derp(); return false;">
     <span class="derp">you do?</span>
     <span class="no-derp">holidays!</span>
   </div>
@@ -28,13 +28,7 @@
 <script>
   const app = new Snow();
   app.Init();
-  const _innocentClickHandler = () => {
-    if (app.Derp()) {
-      document.body.setAttribute('class', 'derp-mode');
-    }
-  }
-  window.addEventListener('keydown', app.KeyDownHandler)
-
+  window.addEventListener('keydown', app.KeyDownHandler);
 </script>
 
 </html>
