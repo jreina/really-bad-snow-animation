@@ -8,7 +8,7 @@ function Snow(options) {
     {
       increment: 3,
       interval: 50,
-      limit: 150
+      limit: 20
     },
     options
   );
@@ -33,9 +33,13 @@ function Snow(options) {
     return { position: original, flake, original };
   };
 
+  /**
+   * Creates a new random flake (div.snowflake element) using the factory function, 
+   * adds it to the body, and pushes it with some position data into an array on the state object.
+   */
   const _getRandomFlake = () => {
     let x = randBetween(0, screenWidth());
-    let y = randBetween(0, 6);
+    let y = randBetween(-10, -1 * screenHeight());
     let flake = _getSnowflake({ x, y });
 
     document.body.appendChild(flake.flake);
@@ -46,8 +50,13 @@ function Snow(options) {
     _state.flakes.push(flake);
   };
 
+  /** Returns a boolean indicating whether or not there are too many snowflakes. */
   const _tooManyFlakes = () => _state.flakes.length > _options.limit;
 
+  /**
+   * Calculates the new position of a given flake using the position data stored in the flake object.
+   * @param {Object} currFlake 
+   */
   const _getNewPosition = currFlake => {
     let { position, flake, original } = currFlake;
     let width = screenWidth();
@@ -60,38 +69,84 @@ function Snow(options) {
 
     let x = 30 * Math.sin(y / 20) + original.x;
 
-    return Object.assign(currFlake, { position: { x, y } });
+    return Object.assign({}, currFlake, { position: { x, y } });
   };
+
+  /**
+   * Loops over the flakes stored in the flakes array on the state object, calculates
+   * their new position, and applies the new positioning to the style attribute of the flake.
+   */
   const _moveFlakes = () => {
-    _state.flakes.forEach(currFlake => {
-      let flake = _getNewPosition(currFlake);
+    _state.flakes = _state.flakes.map(_getNewPosition);
+    _state.flakes.forEach(flake => {
       let newStyle = `left: ${flake.position.x}px; top: ${flake.position.y}px`;
       flake.flake.setAttribute("style", newStyle);
     });
   };
+
+  /**
+   * Starts the animation loop, updating the position of each flake using the
+   * interval specified in milliseconds.
+   * @param {Number} interval 
+   * @returns {Number} the ID of the window interval. This ID can be used as the parameter for clearInterval.
+   */
   const _startAnimation = interval => {
     return setInterval(() => {
-      if (randBetween(1, 10) % 2 === 0 && !_tooManyFlakes()) _getRandomFlake();
+      if (!_tooManyFlakes()) _getRandomFlake();
       _moveFlakes();
     }, interval);
   };
 
+  const _updateRefreshInterval = interval => {
+    clearInterval(_state.intervalId);
+    _state.intervalId = _startAnimation(interval);
+  };
+  const _codes = {
+    left: 37,
+    up: 38,
+    right: 39,
+    down: 40
+  };
+  const _handleKey = ({ keyCode }) => {
+    switch (keyCode) {
+      case _codes.up:
+        _options.interval = 0.9 * _options.interval;
+        break;
+      case _codes.down:
+        _options.interval = 1.1 * _options.interval;
+        break;
+      case _codes.right:
+        _options.limit = 1.1 * _options.limit;
+        break;
+      case _codes.left:
+        _options.limit = 0.9 * _options.limit;
+        break;
+    }
+    _updateRefreshInterval(_options.interval);
+  };
+
+  /**
+   * Spicy derps.
+   */
   const _derp = () => {
     ++_state.derps;
     if (_state.derps > 4) {
-      clearInterval(_state.intervalId);
       _options.limit = 4096;
-      _state.intervalId = _startAnimation(20);
+      _updateRefreshInterval(20);
       return true;
     } else {
       return false;
     }
   };
 
+  /**
+   * Initialize the snow animation.
+   */
   const _init = () => {
     _state.intervalId = _startAnimation(_options.interval);
   };
 
   this.Init = _init;
   this.Derp = _derp;
+  this.KeyDownHandler = _handleKey.bind(this);
 }
